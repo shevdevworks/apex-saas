@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ApexSaaS — Automation Intelligence Platform</title>
+  <meta name="description" content="ApexSaaS connects your entire workflow stack and runs autonomous AI agents that handle triage, routing, and reporting. Zero code. Maximum throughput." />
+
+  <!-- Favicon — SVG renders natively in modern browsers, PNGs are fallbacks -->
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+  <meta name="theme-color" content="#060C09" />
+
+  <!-- Open Graph / Twitter Card — after deploying, replace og:url, og:image and
+       twitter:image with full absolute URLs (https://yourdomain.com/...).
+       Social networks don't always resolve relative paths when generating link previews. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="ApexSaaS — Automation Intelligence Platform" />
+  <meta property="og:description" content="Connects Slack, Jira, GitHub, and Salesforce — then runs autonomous AI agents that handle triage, routing, and reporting." />
+  <meta property="og:image" content="https://shevdevworks.github.io/apex-saas/images/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content="https://shevdevworks.github.io/apex-saas/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ApexSaaS — Automation Intelligence Platform" />
+  <meta name="twitter:description" content="Connects Slack, Jira, GitHub, and Salesforce — then runs autonomous AI agents that handle triage, routing, and reporting." />
+  <meta name="twitter:image" content="https://shevdevworks.github.io/apex-saas/images/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/CustomEase.min.js" defer></script>
+
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- ================================================================
+       HEADER / NAV
+              Order: Product → Features → Pricing → Integrations
+        Dashboard is not in the nav — it's a visual block, not a separate page.
+  ================================================================ -->
+  <header class="header" id="header">
+    <nav class="nav container" aria-label="Main navigation">
+
+      <a href="#hero" class="nav__logo" aria-label="ApexSaaS — go to top">
+        <span class="nav__logo-apex">Apex</span><span class="nav__logo-saas">SaaS</span>
+      </a>
+
+      <ul class="nav__links" role="list">
+        <li><a href="#hero"          class="nav__link">Product</a></li>
+        <li><a href="#features"      class="nav__link">Features</a></li>
+        <li><a href="#pricing"       class="nav__link">Pricing</a></li>
+        <li><a href="#integrations"  class="nav__link">Integrations</a></li>
+      </ul>
+
+      <div class="nav__actions">
+        <a href="#" class="btn btn--ghost btn--sm">Log in</a>
+        <a href="#pricing" class="btn btn--primary btn--sm">Start free trial</a>
+      </div>
+
+      <button class="nav__burger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+        <span></span><span></span><span></span>
+      </button>
+    </nav>
+
+    <nav class="nav__mobile" id="mobile-nav" aria-hidden="true" aria-label="Mobile navigation">
+      <ul role="list">
+        <li><a href="#hero"          class="nav__link">Product</a></li>
+        <li><a href="#features"      class="nav__link">Features</a></li>
+        <li><a href="#pricing"       class="nav__link">Pricing</a></li>
+        <li><a href="#integrations"  class="nav__link">Integrations</a></li>
+      </ul>
+      <div class="nav__mobile-ctas">
+        <a href="#" class="btn btn--ghost btn--full">Log in</a>
+        <a href="#pricing" class="btn btn--primary btn--full">Start free trial</a>
+      </div>
+    </nav>
+  </header>
+
+
+  <main>
+
+    <!-- ================================================================
+         SECTION 1: HERO
+    ================================================================ -->
+    <section class="hero" id="hero" aria-labelledby="hero-headline">
+
+      <div class="hero__orb hero__orb--violet" aria-hidden="true"></div>
+      <div class="hero__orb hero__orb--cyan"   aria-hidden="true"></div>
+      <div class="hero__dot-grid"              aria-hidden="true"></div>
+
+      <div class="container hero__container--single">
+        <div class="hero__copy hero__copy--centered">
+
+          <div class="hero__badge">
+            <span class="hero__badge-pulse" aria-hidden="true"></span>
+            Trusted by <strong>2,400+</strong> engineering teams
+          </div>
+
+          <h1 class="hero__headline" id="hero-headline">
+            <span class="hero__hl-line">Automate the work</span>
+            <span class="hero__hl-line hero__hl-line--gradient">your team shouldn't</span>
+            <span class="hero__hl-line">be doing.</span>
+          </h1>
+
+          <p class="hero__sub">
+            ApexSaaS connects Slack, Jira, GitHub, and Salesforce — then runs
+            autonomous agents that handle triage, routing, and reporting.
+            <em>Zero code. Maximum throughput.</em>
+          </p>
+
+          <div class="hero__ctas">
+            <a href="#pricing" class="btn btn--primary btn--lg">
+              Get started free
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2.5 7h9M8 3.5l3.5 3.5L8 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#features" class="btn btn--ghost btn--lg">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.3"/>
+                <path d="M5.5 4.5l4 2.5-4 2.5V4.5z" fill="currentColor"/>
+              </svg>
+              See it in action
+            </a>
+          </div>
+
+          <div class="hero__proof">
+            <div class="hero__avatars" aria-hidden="true">
+              <span class="avatar" style="--bg:#2d6a4f">AK</span>
+              <span class="avatar" style="--bg:#1b4332">ML</span>
+              <span class="avatar" style="--bg:#40916c">SJ</span>
+              <span class="avatar" style="--bg:#52b788">TP</span>
+              <span class="avatar" style="--bg:#1a2e23">+2k</span>
+            </div>
+            <p class="hero__proof-label">
+              <strong>4.9/5</strong> across 1,200+ reviews on G2 &amp; Capterra
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dashboard mockup — inside hero as a visual accent, not a navigation section -->
+      <div class="container hero__dashboard-wrap">
+        <div class="dashboard" aria-label="ApexSaaS — live operations dashboard preview">
+
+          <header class="dash-chrome" aria-hidden="true">
+            <div class="dash-chrome__dots">
+              <span class="dot dot--red"></span>
+              <span class="dot dot--amber"></span>
+              <span class="dot dot--green"></span>
+            </div>
+            <span class="dash-chrome__title">ApexSaaS — Operations Hub</span>
+            <div class="dash-chrome__status">
+              <span class="status-pulse"></span>
+              Live
+            </div>
+          </header>
+
+          <div class="dash-body">
+            <nav class="dash-sidebar" aria-label="Dashboard navigation">
+              <ul role="list">
+                <li class="dash-nav-item dash-nav-item--active" aria-current="page">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor"/>
+                    <rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor" opacity=".4"/>
+                    <rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor" opacity=".4"/>
+                    <rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor" opacity=".2"/>
+                  </svg>
+                  Overview
+                </li>
+                <li class="dash-nav-item">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M1 10.5V5.5l5-4 5 4v5H9V7.5H5v3H1z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+                  </svg>
+                  Pipelines
+                </li>
+                <li class="dash-nav-item">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.1"/>
+                    <path d="M7 3.5v3.8l2.5 1.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+                  </svg>
+                  Schedules
+                </li>
+                <li class="dash-nav-item">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <path d="M1 10L4 6.5 7 9l3-5 3 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Analytics
+                </li>
+              </ul>
+              <div class="dash-agent-pill">
+                <span class="agent-dot"></span>
+                AI Agent · active
+              </div>
+            </nav>
+
+            <div class="dash-main">
+              <div class="dash-kpis" role="list">
+                <article class="dash-kpi" role="listitem">
+                  <span class="dash-kpi__label">Tasks automated</span>
+                  <span class="dash-kpi__value" data-count-to="12480">0</span>
+                  <span class="dash-kpi__delta up">↑ 23%</span>
+                </article>
+                <article class="dash-kpi" role="listitem">
+                  <span class="dash-kpi__label">Hours saved / mo</span>
+                  <span class="dash-kpi__value" data-count-to="847">0</span>
+                  <span class="dash-kpi__delta up">↑ 18%</span>
+                </article>
+                <article class="dash-kpi" role="listitem">
+                  <span class="dash-kpi__label">Error rate</span>
+                  <span class="dash-kpi__value dash-kpi__value--small">0.3%</span>
+                  <span class="dash-kpi__delta down">↓ 94%</span>
+                </article>
+              </div>
+
+              <div class="dash-chart" aria-hidden="true">
+                <div class="dash-chart__top">
+                  <span class="dash-chart__title">Automation throughput</span>
+                  <span class="dash-chart__range">Last 7 days</span>
+                </div>
+                <svg class="chart-svg" viewBox="0 0 400 72" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%"   stop-color="#00F59B" stop-opacity="0.22"/>
+                      <stop offset="100%" stop-color="#00F59B" stop-opacity="0"/>
+                    </linearGradient>
+                    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%"   stop-color="#00A86B"/>
+                      <stop offset="100%" stop-color="#00F59B"/>
+                    </linearGradient>
+                  </defs>
+                  <path class="chart-area" d="M0,65 C30,58 50,42 85,38 S130,18 165,22 S210,36 248,19 S298,8 338,12 S385,5 400,3 L400,72 L0,72 Z" fill="url(#areaGrad)"/>
+                  <path class="chart-line" id="chart-line-path" d="M0,65 C30,58 50,42 85,38 S130,18 165,22 S210,36 248,19 S298,8 338,12 S385,5 400,3" fill="none" stroke="url(#lineGrad)" stroke-width="1.8" stroke-linecap="round"/>
+                  <circle class="chart-tooltip-dot" cx="338" cy="12" r="3.5"/>
+                  <circle class="chart-tooltip-ring" cx="338" cy="12" r="7" fill="none" stroke="#00F59B" stroke-width="1" opacity="0.35"/>
+                </svg>
+              </div>
+
+              <ul class="dash-feed" role="list">
+                <li class="dash-feed__item">
+                  <span class="feed-icon feed-icon--green" aria-hidden="true">✓</span>
+                  <span class="feed-text"><strong>Jira → Slack</strong> · 214 tickets routed</span>
+                  <time class="feed-time">2m ago</time>
+                </li>
+                <li class="dash-feed__item">
+                  <span class="feed-icon feed-icon--blue" aria-hidden="true">⟳</span>
+                  <span class="feed-text"><strong>GitHub PR digest</strong> sent to #engineering</span>
+                  <time class="feed-time">5m ago</time>
+                </li>
+                <li class="dash-feed__item">
+                  <span class="feed-icon feed-icon--violet" aria-hidden="true">⚡</span>
+                  <span class="feed-text"><strong>CRM sync</strong> · 89 leads enriched by AI agent</span>
+                  <time class="feed-time">12m ago</time>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div><!-- /dashboard -->
+      </div><!-- /hero__dashboard-wrap -->
+
+    </section><!-- /hero -->
+
+
+    <!-- ================================================================
+         SECTION 2: FEATURES — Bento Grid
+         6 cards: 2 large + 4 small.
+          Each showcases a key platform capability.
+          GSAP ScrollTrigger: stagger fade-up on viewport entry.
+    ================================================================ -->
+    <section class="features" id="features" aria-labelledby="features-title">
+
+      <div class="features__glow" aria-hidden="true"></div>
+
+      <div class="container">
+
+        <header class="section-header">
+          <p class="section-eyebrow">Features</p>
+          <h2 class="section-title" id="features-title">
+            Built for teams that<br/>
+            <span class="text-gradient">move fast.</span>
+          </h2>
+          <p class="section-sub">
+            Every tool you need to automate, orchestrate, and scale —
+            without touching a line of infrastructure code.
+          </p>
+        </header>
+
+        <!-- Bento Grid: CSS Grid with named areas -->
+        <div class="bento" role="list" aria-label="Platform features">
+
+          <!-- CARD A — wide, AI Engine (top left) -->
+          <article class="bento__card bento__card--a" role="listitem">
+            <div class="bento__card-icon" aria-hidden="true">
+              <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                <circle cx="14" cy="14" r="5" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M14 3v4M14 21v4M3 14h4M21 14h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M6.2 6.2l2.8 2.8M19 19l2.8 2.8M6.2 21.8l2.8-2.8M19 9l2.8-2.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" opacity=".5"/>
+              </svg>
+            </div>
+            <h3 class="bento__card-title">AI Automation Engine</h3>
+            <p class="bento__card-desc">
+              Our proprietary LLM layer understands context, intent, and priority.
+              It routes work, drafts responses, and escalates only what truly needs human attention.
+            </p>
+            <!-- Mini animated pulse grid (CSS only) -->
+            <div class="bento__pulse-grid" aria-hidden="true">
+              <span></span><span></span><span></span>
+              <span></span><span></span><span></span>
+              <span></span><span></span><span></span>
+            </div>
+            <div class="bento__card-stat">
+              <span class="bento__stat-num">94%</span>
+              <span class="bento__stat-label">reduction in manual triage</span>
+            </div>
+          </article>
+
+          <!-- CARD B — narrow, Real-time Sync (top right) -->
+          <article class="bento__card bento__card--b" role="listitem">
+            <div class="bento__card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="bento__card-title">Real-time Sync</h3>
+            <p class="bento__card-desc">
+              Changes propagate across all connected platforms in under 200ms.
+              Your team always sees the same truth.
+            </p>
+            <div class="bento__sync-indicator" aria-hidden="true">
+              <div class="sync-bar"><div class="sync-bar__fill" style="--d:0s"></div></div>
+              <div class="sync-bar"><div class="sync-bar__fill" style="--d:.15s"></div></div>
+              <div class="sync-bar"><div class="sync-bar__fill" style="--d:.3s"></div></div>
+              <div class="sync-bar"><div class="sync-bar__fill" style="--d:.45s"></div></div>
+              <div class="sync-bar"><div class="sync-bar__fill" style="--d:.6s"></div></div>
+            </div>
+          </article>
+
+          <!-- CARD C — small, No-Code Builder -->
+          <article class="bento__card bento__card--c" role="listitem">
+            <div class="bento__card-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <rect x="2" y="2" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="12" y="2" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5" opacity=".4"/>
+                <rect x="2" y="12" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5" opacity=".4"/>
+                <rect x="12" y="12" width="8" height="8" rx="1.5" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3 class="bento__card-title">No-Code Builder</h3>
+            <p class="bento__card-desc">
+              Drag-and-drop pipeline editor. Ship automation in minutes, not sprints.
+            </p>
+          </article>
+
+          <!-- CARD D — small, Smart Alerts -->
+          <article class="bento__card bento__card--d" role="listitem">
+            <div class="bento__card-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M11 2a7 7 0 00-7 7v4l-2 3h18l-2-3V9a7 7 0 00-7-7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M9 18a2 2 0 004 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3 class="bento__card-title">Smart Alerts</h3>
+            <p class="bento__card-desc">
+              Signal over noise. AI filters anomalies and pages the right person at the right time.
+            </p>
+          </article>
+
+          <!-- CARD E — wide, Analytics (bottom left) -->
+          <article class="bento__card bento__card--e" role="listitem">
+            <div class="bento__card-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M2 18l5-6 4 4 5-8 4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="20" cy="12" r="2" fill="currentColor" opacity=".6"/>
+              </svg>
+            </div>
+            <h3 class="bento__card-title">Advanced Analytics</h3>
+            <p class="bento__card-desc">
+              Full visibility into throughput, latency, error rates, and agent performance.
+              Export to any BI tool via one-click CSV or live API.
+            </p>
+            <!-- Decorative mini bar chart -->
+            <div class="bento__bar-chart" aria-hidden="true">
+              <div class="bento__bar" style="--h:35%"></div>
+              <div class="bento__bar" style="--h:60%"></div>
+              <div class="bento__bar" style="--h:45%"></div>
+              <div class="bento__bar" style="--h:80%"></div>
+              <div class="bento__bar" style="--h:55%"></div>
+              <div class="bento__bar" style="--h:90%"></div>
+              <div class="bento__bar bento__bar--active" style="--h:75%"></div>
+            </div>
+          </article>
+
+          <!-- CARD F — small, Enterprise Security -->
+          <article class="bento__card bento__card--f" role="listitem">
+            <div class="bento__card-icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                <path d="M11 2L3 6v6c0 4.4 3.4 8.5 8 9.5 4.6-1 8-5.1 8-9.5V6l-8-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M7.5 11l2.5 2.5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3 class="bento__card-title">Enterprise Security</h3>
+            <p class="bento__card-desc">
+              SOC 2 Type II certified. End-to-end encryption. SSO, SAML, SCIM out of the box.
+            </p>
+          </article>
+
+        </div><!-- /bento -->
+      </div>
+    </section><!-- /features -->
+
+
+    <!-- ================================================================
+         SECTION 3: TESTIMONIALS
+         3 cards with quotes, avatars, job title, and company.
+         GSAP ScrollTrigger: stagger slide-up.
+    ================================================================ -->
+    <section class="testimonials" id="testimonials" aria-labelledby="testimonials-title">
+
+      <div class="testimonials__glow" aria-hidden="true"></div>
+
+      <div class="container">
+
+        <header class="section-header">
+          <p class="section-eyebrow">Testimonials</p>
+          <h2 class="section-title" id="testimonials-title">
+            Loved by teams that<br/>
+            <span class="text-gradient">ship fast.</span>
+          </h2>
+        </header>
+
+        <div class="testi-grid" role="list" aria-label="Customer testimonials">
+
+          <!-- TESTIMONIAL 1 -->
+          <article class="testi-card" role="listitem">
+            <div class="testi-card__stars" aria-label="5 out of 5 stars">
+              <span aria-hidden="true">★★★★★</span>
+            </div>
+            <blockquote class="testi-card__quote">
+              "We cut our ops overhead by 80% in the first month.
+              The AI triage alone replaced what used to be a full-time hire.
+              ApexSaaS is genuinely the most impactful tool we've adopted this year."
+            </blockquote>
+            <footer class="testi-card__author">
+              <div class="testi-avatar" aria-hidden="true">AR</div>
+              <div class="testi-card__meta">
+                <strong class="testi-card__name">Alex Rodriguez</strong>
+                <span class="testi-card__role">VP of Engineering · Finova</span>
+              </div>
+            </footer>
+          </article>
+
+          <!-- TESTIMONIAL 2 — featured (middle) -->
+          <article class="testi-card testi-card--featured" role="listitem">
+            <div class="testi-card__stars" aria-label="5 out of 5 stars">
+              <span aria-hidden="true">★★★★★</span>
+            </div>
+            <blockquote class="testi-card__quote">
+              "Our Jira-to-Slack pipeline went live in 11 minutes.
+              No engineering involvement. The dashboard gives us visibility we never
+              had before — it feels like a superpower for a 12-person team."
+            </blockquote>
+            <footer class="testi-card__author">
+              <div class="testi-avatar testi-avatar--green" aria-hidden="true">SK</div>
+              <div class="testi-card__meta">
+                <strong class="testi-card__name">Sarah Kim</strong>
+                <span class="testi-card__role">Head of Product · Stackr</span>
+              </div>
+            </footer>
+          </article>
+
+          <!-- TESTIMONIAL 3 -->
+          <article class="testi-card" role="listitem">
+            <div class="testi-card__stars" aria-label="5 out of 5 stars">
+              <span aria-hidden="true">★★★★★</span>
+            </div>
+            <blockquote class="testi-card__quote">
+              "We evaluated 6 automation platforms. ApexSaaS was the only one
+              that could handle our data volume without custom engineering.
+              The enterprise support is genuinely world-class."
+            </blockquote>
+            <footer class="testi-card__author">
+              <div class="testi-avatar testi-avatar--blue" aria-hidden="true">MT</div>
+              <div class="testi-card__meta">
+                <strong class="testi-card__name">Marcus Thorn</strong>
+                <span class="testi-card__role">CTO · Orbix Systems</span>
+              </div>
+            </footer>
+          </article>
+
+        </div><!-- /testi-grid -->
+
+        <!-- Logos strip -->
+        <div class="logos-strip" aria-label="Companies using ApexSaaS">
+          <span class="logos-strip__label">Trusted by teams at</span>
+          <ul class="logos-strip__list" role="list">
+            <li class="logo-item">Finova</li>
+            <li class="logo-item">Stackr</li>
+            <li class="logo-item">Orbix</li>
+            <li class="logo-item">Meridian</li>
+            <li class="logo-item">Cloudwave</li>
+          </ul>
+        </div>
+
+      </div>
+    </section><!-- /testimonials -->
+
+
+    <!-- ================================================================
+         SECTION 4: PRICING
+    ================================================================ -->
+    <section class="pricing" id="pricing" aria-labelledby="pricing-title">
+
+      <div class="pricing__glow" aria-hidden="true"></div>
+
+      <div class="container">
+
+        <header class="section-header">
+          <p class="section-eyebrow">Pricing</p>
+          <h2 class="section-title" id="pricing-title">
+            Scale without
+            <span class="text-gradient">surprises.</span>
+          </h2>
+          <p class="section-sub">
+            One flat price per tier. No seat taxes. No hidden API fees.
+            Cancel or scale at any time.
+          </p>
+        </header>
+
+        <div class="billing-toggle" role="group" aria-label="Billing frequency">
+          <span class="billing-toggle__lbl" id="lbl-monthly">Monthly</span>
+          <button id="billing-btn" class="toggle-pill" role="switch" aria-checked="false" aria-labelledby="lbl-monthly lbl-yearly">
+            <span class="toggle-pill__thumb"></span>
+          </button>
+          <span class="billing-toggle__lbl" id="lbl-yearly">
+            Yearly
+            <span class="billing-toggle__discount">Save 20%</span>
+          </span>
+        </div>
+
+        <div class="slider-wrap" aria-label="Select user volume">
+          <div class="slider-wrap__head">
+            <label class="slider-wrap__label" for="user-slider">Active users / month</label>
+            <output class="slider-wrap__output" id="slider-output" for="user-slider">5,000 users</output>
+          </div>
+          <div class="slider-track-container">
+            <div class="slider-fill-track" id="slider-fill" aria-hidden="true"></div>
+            <input type="range" id="user-slider" class="user-slider"
+              min="0" max="6" step="1" value="2"
+              aria-valuemin="1000" aria-valuemax="100000"
+              aria-valuenow="5000" aria-valuetext="5,000 users"/>
+          </div>
+          <div class="slider-ticks" aria-hidden="true">
+            <span>1K</span><span>2K</span><span>5K</span>
+            <span>10K</span><span>25K</span><span>50K</span><span>100K</span>
+          </div>
+        </div>
+
+        <div class="pricing-grid" role="list" aria-label="Available pricing plans">
+
+          <article class="pcard" role="listitem" data-tier="starter">
+            <header class="pcard__header">
+              <div class="pcard__icon pcard__icon--starter" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 1.5l2 4.2 4.5.65-3.25 3.17.77 4.5L9 11.8l-4.02 2.22.77-4.5L2.5 6.35 7 5.7 9 1.5z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="pcard__name">Starter</h3>
+                <p class="pcard__desc">Small teams beginning their automation journey.</p>
+              </div>
+            </header>
+            <div class="pcard__price-row">
+              <sup class="pcard__currency">$</sup>
+              <span class="pcard__price" id="starter-price" aria-live="polite" aria-atomic="true">49</span>
+              <span class="pcard__period">/mo</span>
+            </div>
+            <p class="pcard__billing-note" id="starter-note">Billed monthly · $49/mo</p>
+            <ul class="pcard__features" role="list">
+              <li class="feat feat--yes">Up to <strong>2,000</strong> active users</li>
+              <li class="feat feat--yes">5 automation pipelines</li>
+              <li class="feat feat--yes">Slack &amp; Email integrations</li>
+              <li class="feat feat--yes">Standard analytics</li>
+              <li class="feat feat--no">AI agents</li>
+              <li class="feat feat--no">Priority support</li>
+            </ul>
+            <a href="#" class="btn btn--outline btn--full pcard__cta">Get started</a>
+          </article>
+
+          <article class="pcard pcard--pro" role="listitem" data-tier="pro" aria-current="true">
+            <div class="pcard__badge">Most popular</div>
+            <header class="pcard__header">
+              <div class="pcard__icon pcard__icon--pro" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M9 1l2.6 5.3 5.7.83-4.15 4.04.98 5.73L9 14.1l-5.13 2.8.98-5.73L.7 7.13l5.7-.83L9 1z" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="pcard__name">Pro</h3>
+                <p class="pcard__desc">Growing teams that need full automation power.</p>
+              </div>
+            </header>
+            <div class="pcard__price-row">
+              <sup class="pcard__currency">$</sup>
+              <span class="pcard__price" id="pro-price" aria-live="polite" aria-atomic="true">149</span>
+              <span class="pcard__period">/mo</span>
+            </div>
+            <p class="pcard__billing-note" id="pro-note">Billed monthly · $149/mo</p>
+            <div class="coverage" id="coverage-block" aria-live="polite" aria-atomic="true">
+              <div class="coverage__bar"><div class="coverage__fill" id="coverage-fill"></div></div>
+              <p class="coverage__label" id="coverage-label">✓ Covers your selected volume</p>
+            </div>
+            <ul class="pcard__features" role="list">
+              <li class="feat feat--yes">Up to <strong id="pro-limit">25,000</strong> active users</li>
+              <li class="feat feat--yes">Unlimited pipelines</li>
+              <li class="feat feat--yes">All integrations (50+)</li>
+              <li class="feat feat--yes">Advanced analytics + exports</li>
+              <li class="feat feat--yes"><strong>AI agents included</strong></li>
+              <li class="feat feat--yes">Priority support — 4 hr SLA</li>
+            </ul>
+            <a href="#" class="btn btn--primary btn--full pcard__cta">Start Pro trial</a>
+          </article>
+
+          <article class="pcard" role="listitem" data-tier="enterprise">
+            <header class="pcard__header">
+              <div class="pcard__icon pcard__icon--enterprise" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <rect x="1.5" y="9" width="4" height="7.5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+                  <rect x="7" y="5" width="4" height="11.5" rx="1" stroke="currentColor" stroke-width="1.4"/>
+                  <rect x="12.5" y="1.5" width="4" height="15" rx="1" stroke="currentColor" stroke-width="1.4"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="pcard__name">Enterprise</h3>
+                <p class="pcard__desc">Unlimited scale with dedicated infrastructure.</p>
+              </div>
+            </header>
+            <div class="pcard__price-row">
+              <span class="pcard__price pcard__price--custom">Custom</span>
+            </div>
+            <p class="pcard__billing-note">Volume pricing — talk to us</p>
+            <ul class="pcard__features" role="list">
+              <li class="feat feat--yes"><strong>Unlimited</strong> active users</li>
+              <li class="feat feat--yes">Dedicated AI agent cluster</li>
+              <li class="feat feat--yes">SSO / SAML / SCIM</li>
+              <li class="feat feat--yes">Custom SLA + uptime guarantee</li>
+              <li class="feat feat--yes">On-prem deployment option</li>
+              <li class="feat feat--yes">Dedicated success engineer</li>
+            </ul>
+            <a href="mailto:sales@apexsaas.io" class="btn btn--outline btn--full pcard__cta">Talk to sales</a>
+          </article>
+
+        </div>
+
+        <ul class="trust-strip" role="list">
+          <li>🔒 SOC 2 Type II</li>
+          <li>✓ GDPR compliant</li>
+          <li>⟳ 99.99% uptime SLA</li>
+          <li>↩ 14-day money-back</li>
+        </ul>
+
+      </div>
+    </section><!-- /pricing -->
+
+
+    <!-- ================================================================
+         SECTION 5: INTEGRATIONS
+    ================================================================ -->
+    <section class="integrations" id="integrations" aria-labelledby="integrations-title">
+      <div class="container">
+
+        <header class="section-header">
+          <p class="section-eyebrow">Integrations</p>
+          <h2 class="section-title" id="integrations-title">
+            Connects to your <span class="text-gradient">entire stack.</span>
+          </h2>
+          <p class="section-sub">
+            50+ native integrations. Full REST API and webhooks for everything else.
+          </p>
+        </header>
+
+        <div class="integrations__grid" aria-label="Available integrations">
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1" y="1" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/><rect x="8" y="1" width="5" height="5" rx="1" fill="currentColor"/><rect x="1" y="8" width="5" height="5" rx="1" fill="currentColor"/><rect x="8" y="8" width="5" height="5" rx="1" fill="currentColor" opacity=".7"/></svg>Slack</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3l2 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>GitHub</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="1.5" y="1.5" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 7h5M7 4.5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Jira</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 10.5L5 7l3 3 2.5-4.5L13 9" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Salesforce</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 1l1.6 4H13l-3.5 2.6 1.4 4.1L7 9.2 3.1 11.7l1.4-4.1L1 5h4.4L7 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>HubSpot</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="2" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><path d="M5 5h4M5 7h4M5 9h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Notion</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 4h10M2 7h7M2 10h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Linear</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M3 11L7 3l4 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.5 8.5h5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Figma</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><rect x="2" y="9" width="2.5" height="3" rx=".5" fill="currentColor" opacity=".5"/><rect x="5.75" y="5.5" width="2.5" height="6.5" rx=".5" fill="currentColor" opacity=".75"/><rect x="9.5" y="2" width="2.5" height="10" rx=".5" fill="currentColor"/></svg>Datadog</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M7 2a5 5 0 100 10A5 5 0 007 2z" stroke="currentColor" stroke-width="1.2"/><path d="M7 5v2l1.5 1.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>Stripe</div>
+          <div class="integration-pill"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>AWS</div>
+          <div class="integration-pill integration-pill--more">+ 39 more</div>
+        </div>
+
+        <div class="integrations__cta">
+          <a href="#" class="btn btn--ghost">View all integrations →</a>
+        </div>
+
+      </div>
+    </section><!-- /integrations -->
+
+  </main>
+
+
+  <!-- ================================================================
+       FOOTER
+  ================================================================ -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <a href="#hero" class="nav__logo">
+        <span class="nav__logo-apex">Apex</span><span class="nav__logo-saas">SaaS</span>
+      </a>
+      <p class="footer__credit">
+        Demo project by
+        <a href="https://github.com/shevdevworks" target="_blank" rel="noopener" class="footer__link">
+          ShevDevWorks
+        </a>
+        — Vanilla JS · HTML5 · CSS3 · GSAP
+      </p>
+    </div>
+  </footer>
+
+
+  <script src="js/app.js"    defer></script>
+  <script src="js/script.js" defer></script>
+</body>
+</html>
