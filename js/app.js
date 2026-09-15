@@ -347,14 +347,27 @@ const ScrollAnimations = (() => {
 
   /* ── Pricing cards and controls ── */
   function animatePricingCards() {
-    gsap.from('.pcard', {
-      ...st('.pricing-grid', '88%'),
-      y: 48,
-      opacity: 0,
-      duration: 0.72,
-      stagger: 0.13,
-      ease: 'power3.out',
-    });
+    // .pcard has a CSS transform transition, so gsap.from() read a
+    // mid-transition value as its end state and left cards stuck 48px low.
+    // fromTo() with explicit ends + clearProps hands transform back to CSS
+    // (.pcard--pro elevation, hover lift). Opacity is faded on the grid,
+    // because card opacity is owned by CSS (dimmed inactive tiers).
+    gsap.fromTo('.pricing-grid',
+      { opacity: 0 },
+      { ...st('.pricing-grid', '88%'), opacity: 1, duration: 0.6, ease: 'power2.out', clearProps: 'opacity' }
+    );
+
+    gsap.fromTo('.pcard',
+      { y: 48 },
+      {
+        ...st('.pricing-grid', '88%'),
+        y: 0,
+        duration: 0.72,
+        stagger: 0.13,
+        ease: 'power3.out',
+        clearProps: 'transform',
+      }
+    );
 
     gsap.from('.trust-strip li', {
       ...st('.trust-strip', '92%'),
@@ -386,14 +399,19 @@ const ScrollAnimations = (() => {
       ...BASE,
     });
 
-    gsap.from('.integration-pill', {
-      ...st('.integrations__grid', '88%'),
-      y: 16,
-      opacity: 0,
-      duration: 0.4,
-      stagger: 0.04,
-      ease: 'power2.out',
-    });
+    // Same CSS-transition clash as .pcard — explicit end values + clearProps
+    gsap.fromTo('.integration-pill',
+      { y: 16, opacity: 0 },
+      {
+        ...st('.integrations__grid', '88%'),
+        y: 0,
+        opacity: 1,
+        duration: 0.4,
+        stagger: 0.04,
+        ease: 'power2.out',
+        clearProps: 'transform,opacity',
+      }
+    );
   }
 
   /* ── Section eyebrow labels ── */

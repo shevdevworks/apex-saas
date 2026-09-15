@@ -100,7 +100,7 @@
 
           <div class="hero__badge">
             <span class="hero__badge-pulse" aria-hidden="true"></span>
-            Trusted by <strong>2,400+</strong> engineering teams
+            <span>Trusted by <strong>2,400+</strong> engineering teams</span>
           </div>
 
           <h1 class="hero__headline" id="hero-headline">
@@ -557,9 +557,10 @@
               aria-valuemin="1000" aria-valuemax="100000"
               aria-valuenow="5000" aria-valuetext="5,000 users"/>
           </div>
+          <!-- --i = slider index, CSS positions each label under the thumb center -->
           <div class="slider-ticks" aria-hidden="true">
-            <span>1K</span><span>2K</span><span>5K</span>
-            <span>10K</span><span>25K</span><span>50K</span><span>100K</span>
+            <span style="--i:0">1K</span><span style="--i:1">2K</span><span style="--i:2">5K</span>
+            <span style="--i:3">10K</span><span style="--i:4">25K</span><span style="--i:5">50K</span><span style="--i:6">100K</span>
           </div>
         </div>
 
@@ -584,7 +585,7 @@
             </div>
             <p class="pcard__billing-note" id="starter-note">Billed monthly · $49/mo</p>
             <ul class="pcard__features" role="list">
-              <li class="feat feat--yes">Up to <strong>2,000</strong> active users</li>
+              <li class="feat feat--yes"><span>Up to <strong>2,000</strong> active users</span></li>
               <li class="feat feat--yes">5 automation pipelines</li>
               <li class="feat feat--yes">Slack &amp; Email integrations</li>
               <li class="feat feat--yes">Standard analytics</li>
@@ -618,7 +619,7 @@
               <p class="coverage__label" id="coverage-label">✓ Covers your selected volume</p>
             </div>
             <ul class="pcard__features" role="list">
-              <li class="feat feat--yes">Up to <strong id="pro-limit">25,000</strong> active users</li>
+              <li class="feat feat--yes"><span>Up to <strong id="pro-limit">25,000</strong> active users</span></li>
               <li class="feat feat--yes">Unlimited pipelines</li>
               <li class="feat feat--yes">All integrations (50+)</li>
               <li class="feat feat--yes">Advanced analytics + exports</li>
@@ -647,7 +648,7 @@
             </div>
             <p class="pcard__billing-note">Volume pricing — talk to us</p>
             <ul class="pcard__features" role="list">
-              <li class="feat feat--yes"><strong>Unlimited</strong> active users</li>
+              <li class="feat feat--yes"><span><strong>Unlimited</strong> active users</span></li>
               <li class="feat feat--yes">Dedicated AI agent cluster</li>
               <li class="feat feat--yes">SSO / SAML / SCIM</li>
               <li class="feat feat--yes">Custom SLA + uptime guarantee</li>

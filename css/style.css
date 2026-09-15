@@ -544,12 +544,17 @@ em { font-style: normal; color: var(--text-primary); }
   gap: var(--space-5);
   transform: translateY(-110%);
   opacity: 0;
-  transition: transform var(--trans-slow), opacity var(--trans-slow);
+  /* visibility: hidden keeps links out of Tab order while closed;
+     delayed on close so the slide-out animation still plays */
+  visibility: hidden;
+  transition: transform var(--trans-slow), opacity var(--trans-slow), visibility 0s linear 500ms;
   box-shadow: 0 8px 32px rgba(0,0,0,0.60);
 }
 .nav__mobile[aria-hidden="false"] {
   transform: translateY(0);
   opacity: 1;
+  visibility: visible;
+  transition: transform var(--trans-slow), opacity var(--trans-slow), visibility 0s;
 }
 .nav__mobile ul {
   display: flex;
@@ -1165,6 +1170,8 @@ em { font-style: normal; color: var(--text-primary); }
    08b. RANGE SLIDER
 ============================================================ */
 .slider-wrap {
+  --thumb: 22px;   /* keep in sync with the thumb width below */
+  --progress: 0;
   max-width: 680px;
   margin-inline: auto;
   margin-bottom: var(--space-12);
@@ -1194,7 +1201,12 @@ em { font-style: normal; color: var(--text-primary); }
   text-shadow: 0 0 12px rgba(0,245,155,0.40);
 }
 
-/* Relative parent for fill overlay + range input */
+/*
+  Relative parent for fill overlay + range input.
+  The thumb center travels from thumb/2 to (100% - thumb/2), not 0 → 100%,
+  so fill width and tick labels use the same formula to line up with it.
+  JS sets --progress (0 → 1) on .slider-wrap.
+*/
 .slider-track-container {
   position: relative;
   height: 20px;
@@ -1202,14 +1214,12 @@ em { font-style: normal; color: var(--text-primary); }
   align-items: center;
 }
 
-/*
-  Gradient fill behind the thumb — JS sets width dynamically.
-  Sits behind the transparent range track.
-*/
+/* Gradient fill behind the thumb — ends exactly at the thumb center */
 .slider-fill-track {
   position: absolute;
   left: 0; top: 50%;
   transform: translateY(-50%);
+  width: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--progress));
   height: 4px;
   border-radius: var(--radius-full);
   background: var(--grad-accent-h);
@@ -1226,7 +1236,8 @@ em { font-style: normal; color: var(--text-primary); }
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 4px;
+  height: 20px; /* touch target; the visible track stays 4px */
+  margin: 0;
   background: transparent;
   outline: none;
   position: relative;
@@ -1235,16 +1246,17 @@ em { font-style: normal; color: var(--text-primary); }
 }
 
 /* Track beneath fill */
+/* Semi-transparent so the fill underneath shows through (opaque hid it in Firefox) */
 .user-slider::-webkit-slider-runnable-track {
   height: 4px;
   border-radius: var(--radius-full);
-  background: var(--bg-inset);
+  background: rgba(255,255,255,0.03);
   border: 1px solid var(--border-dim);
 }
 .user-slider::-moz-range-track {
   height: 4px;
   border-radius: var(--radius-full);
-  background: var(--bg-inset);
+  background: rgba(255,255,255,0.03);
   border: 1px solid var(--border-dim);
 }
 
@@ -1296,12 +1308,17 @@ em { font-style: normal; color: var(--text-primary); }
 
 /* Tick labels below slider */
 .slider-ticks {
-  display: flex;
-  justify-content: space-between;
+  position: relative;
+  height: 14px;
   margin-top: var(--space-3);
-  padding-inline: 2px;
 }
+/* Each label centered under its thumb position (--i set in HTML, 6 = max index) */
 .slider-ticks span {
+  position: absolute;
+  top: 0;
+  left: calc(var(--thumb) / 2 + (100% - var(--thumb)) * var(--i) / 6);
+  transform: translateX(-50%);
+  white-space: nowrap;
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-muted);
@@ -1868,7 +1885,6 @@ em { font-style: normal; color: var(--text-primary); }
    RESPONSIVE — additions for the new layout structure
 ============================================================ */
 @media (max-width: 540px) {
-  .hero__container--single { padding-inline: 0; }
   .hero__copy--centered .hero__ctas { flex-direction: column; width: 100%; }
   .hero__copy--centered .hero__ctas .btn { width: 100%; justify-content: center; }
 }
@@ -1884,9 +1900,15 @@ em { font-style: normal; color: var(--text-primary); }
     but gets an enhanced glow when activated.
 ============================================================ */
 
-/* Inactive cards are dimmed via JS inline style (opacity: 0.45).
-    This class does the opposite: restores Starter/Enterprise
-    with hover effects when they are active per the slider. */
+/* Inactive cards are dimmed but stay clickable — hover brings them back.
+    Kept in CSS (not JS inline styles) so GSAP reveal tweens can't clash with it. */
+.pricing-grid .pcard:not(.pcard--slider-active) { opacity: 0.45; }
+.pricing-grid .pcard:not(.pcard--slider-active):hover,
+.pricing-grid .pcard:not(.pcard--slider-active):focus-within { opacity: 1; }
+
+/* Active Starter/Enterprise lift slightly (Pro has its own elevation) */
+.pcard--slider-active:not(.pcard--pro) { transform: translateY(-3px); }
+
 .pcard--slider-active {
   border-color: var(--border-strong) !important;
   box-shadow:

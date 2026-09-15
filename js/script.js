@@ -177,7 +177,7 @@ function initPricing() {
   /* ── DOM refs ── */
   const slider         = document.getElementById('user-slider');
   const sliderOutput   = document.getElementById('slider-output');
-  const sliderFill     = document.getElementById('slider-fill');
+  const sliderWrap     = slider?.closest('.slider-wrap');
   const billingBtn     = document.getElementById('billing-btn');
 
   const starterCard    = document.querySelector('[data-tier="starter"]');
@@ -224,51 +224,23 @@ function initPricing() {
     return n.toLocaleString('en-US');
   }
 
-  /* Fills the track left of the thumb with the brand emerald gradient. */
+  /* Fills the track up to the thumb center.
+     CSS turns --progress into a width that accounts for the thumb size
+     (see .slider-fill-track), so the fill and tick labels match the thumb. */
   function updateFill(index) {
-    const pct = (index / MAX_INDEX) * 100;
-
-    // Option A: separate #slider-fill div (if present in HTML)
-    if (sliderFill) {
-      sliderFill.style.width = `${pct}%`;
-      return;
-    }
-
-    // Option B: CSS custom property on the input itself
-    slider.style.setProperty('--fill', `${pct}%`);
-    slider.style.background = `
-      linear-gradient(
-        to right,
-        #00F59B 0%,
-        #00A86B ${pct}%,
-        var(--bg-inset, #0A1009) ${pct}%,
-        var(--bg-inset, #0A1009) 100%
-      )
-    `;
+    sliderWrap?.style.setProperty('--progress', String(index / MAX_INDEX));
   }
 
   /* ── Active card ──
-     Removes .pcard--active from all cards and sets it on the
-     matching one. .pcard--active mirrors .pcard--pro styles
-     (border glow, scale) so any card can receive the highlight.
+     Sets .pcard--slider-active on the matching card only.
+     All visuals (dimming inactive cards, lift, glow) live in CSS —
+     inline styles here used to fight the GSAP reveal tween.
   ─────────────────────────────────────────────────────── */
   const allCards = [starterCard, proCard, enterpriseCard];
 
   function updateActiveCard(cardName) {
     const target = { starter: starterCard, pro: proCard, enterprise: enterpriseCard }[cardName];
-
-    allCards.forEach(card => {
-      if (!card) return;
-      const isTarget = card === target;
-
-      // Dynamic active class (we never touch .pcard--pro — it's always visually highlighted)
-      card.classList.toggle('pcard--slider-active', isTarget);
-
-      // Dim inactive cards to draw attention to the active one
-      card.style.opacity       = isTarget ? '1'   : '0.45';
-      card.style.pointerEvents = isTarget ? ''    : 'none';
-      card.style.transform     = isTarget && card !== proCard ? 'translateY(-3px)' : '';
-    });
+    allCards.forEach(card => card.classList.toggle('pcard--slider-active', card === target));
   }
 
   /* ── Coverage bar (Pro tier only) ──
