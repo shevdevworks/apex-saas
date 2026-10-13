@@ -1,1 +1,4 @@
 exports/
+
+# Local portfolio capture and packaging helpers
+scripts/*-portfolio.cjs
