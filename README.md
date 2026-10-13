@@ -1,118 +1,68 @@
-# ApexSaaS — Automation Intelligence Platform
+# ApexSaaS
 
-> **Portfolio / demo project** built to showcase front-end skills.
-> ApexSaaS is not a real company. All data, testimonials, company names,
-> pricing, and metrics on the page are fictional.
+A responsive SaaS landing page concept for a workflow automation platform. Designed and developed by [ShevDevWorks](https://shevdevworks.com/).
 
-**Live demo →** https://shevdevworks.github.io/apex-saas/
+[Live site](https://shevdevworks.github.io/apex-saas/)
 
-![OG preview](images/og-image.png)
+## The concept
 
----
+**Great work. Less busywork.** The landing page explains an automation product through an interactive workflow, rather than invented reviews or customer statistics.
 
-## Overview
+A light, spacious opening pairs large typography with an original folded-ribbon illustration. Cobalt blue ties the brand mark, workflow paths, actions, and closing section together. A dark integration section creates a change of pace between the product walkthrough and pricing.
 
-A dark-themed ("Deep Obsidian & Emerald") SaaS landing page with an
-animated hero, a bento feature grid, testimonials, and a fully
-interactive pricing calculator — built with **zero frameworks and zero
-build tooling**. Just semantic HTML, hand-written CSS, and vanilla JS,
-with GSAP loaded from a CDN for animation.
+This is an independent portfolio project, not an operating software company. Workflows use sample data in the browser. App logos illustrate possible connections; no third-party accounts are accessed. Plans are illustrative and no payments or personal data are collected.
 
-The goal was to demonstrate production-quality front-end craft: a
-token-driven design system, accessible interactive components, and
-scroll-based motion — without reaching for React, Tailwind, or a
-bundler.
+## Try it
 
----
+- **Workflow playground:** route an inbound lead, triage a support request, or share a release. Run any scenario, inspect its steps, or switch scenarios during execution. Pending updates from the previous run are cancelled.
+- **Product walkthrough:** three selectable views explain connections, conditional rules, and human approvals. The approval example can be approved and reset.
+- **Pricing calculator:** seven automation volumes, monthly/yearly billing, and one suggested plan. Prices are calculated in cents; yearly billing applies an exact 20% discount and shows the annual total.
+- **Plan previews:** accessible dialogs show the selected plan, capacity, and current price. Choosing an undersized plan explains the limit.
+- **Navigation and FAQ:** mobile menu, section navigation, keyboard-operable tabsets, and native HTML disclosures.
 
-## Features
+## Run locally
 
-- **Hero** — staggered GSAP load timeline (badge → headline → CTAs →
-  dashboard), a floating dashboard mockup, animated KPI counters, and
-  an SVG chart line that draws itself in on load
-- **Bento feature grid** — 6-card CSS `grid-template-areas` layout,
-  each card with its own micro-animation (pulse grid, sync bars, mini
-  bar chart)
-- **Testimonials** — 3-card layout with a featured/elevated center
-  card and a scrolling logo strip
-- **Pricing calculator** (fully vanilla JS, no libraries):
-  - Custom-styled `<input type="range">` with an index-based model (7
-    discrete steps) so the thumb snaps evenly to each tick label
-  - Monthly / yearly billing toggle with live price recalculation
-  - Auto-highlights the plan (Starter / Pro / Enterprise) that matches
-    the selected user volume
-  - Coverage bar on the Pro card showing how much of the selected
-    volume it covers, with a warning state when volume exceeds the cap
-- **Integrations grid** — 12 inline-SVG integration pills
-- **Scroll animations** — GSAP ScrollTrigger; every section owns an
-  independent timeline
-- **Accessibility** — mobile nav drawer with focus management and
-  Escape-to-close, `aria-live` regions on dynamic pricing values,
-  keyboard-operable slider, and full `prefers-reduced-motion` support
-  (all animations resolve to their end state instantly)
-- **Resilient by design** — if the GSAP CDN fails to load or an
-  animation errors out, a safety-net timeout force-reveals the page
-  content instead of leaving it invisible
+No build or dependency installation is needed to serve the site.
 
----
-
-## Tech stack
-
-| Layer | Tools |
-|---|---|
-| Markup | Semantic HTML5, BEM-style class naming |
-| Styling | Hand-written CSS3 — design tokens via CSS custom properties, fluid `clamp()` type scale, 2-breakpoint responsive layout |
-| Animation | [GSAP 3](https://gsap.com/) (core, ScrollTrigger, CustomEase) via CDN |
-| Interactivity | Vanilla JavaScript (ES6+, IIFE modules — no bundler) |
-| Typography | Space Grotesk · Inter · JetBrains Mono (Google Fonts) |
-| Icons | Inline SVG (no icon library) |
-| Hosting | GitHub Pages |
-
-No npm dependencies at runtime, no build step — every asset is either
-static or loaded from a CDN.
-
----
-
-## Project structure
-
-```
-apex-saas/
-├── index.html
-├── css/
-│   └── style.css       # design tokens + all component styles
-├── js/
-│   ├── app.js           # GSAP animation modules (hero timeline, counters, chart draw, scroll reveals)
-│   └── script.js        # UI logic — nav, mobile menu, header scroll state, pricing calculator
-└── images/
-    ├── favicon.svg
-    ├── favicon-32.png
-    ├── favicon-16.png
-    ├── apple-touch-icon.png
-    └── og-image.png
+```powershell
+python -m http.server 5173 --bind 127.0.0.1
 ```
 
----
+Open http://127.0.0.1:5173/ in a browser. A static server such as VS Code Live Server also works.
 
-## Running locally
+## Implementation
 
-No build step required — just serve the folder statically:
+- Semantic HTML, CSS, and vanilla JavaScript.
+- Self-hosted Manrope and Space Grotesk, with their licenses in `fonts/`.
+- Original inline SVG artwork and a shared icon symbol set.
+- CSS and the Web Animations API for masked headline reveals, a layered hero entrance, a light trace along the ribbon, and softly floating interface layers. The workflow stage gains depth on desktop scroll, and the integration map carries moving signals.
+- Scenario transitions, step confirmation, product walkthroughs, prices, and FAQ expansion respond to user actions. Motion is kept separate from workflow and pricing state.
+- Pointer-responsive depth only on precise pointing devices. Mobile motion is gentler. Scrolling remains native, with no animation CDN or scroll-jacking.
+- Ambient animation stops outside the viewport or in a hidden tab. The small pause control beneath the hero artwork disables motion and remembers the preference for the tab. The system's reduced-motion setting takes precedence.
+- Native range input and dialog, visible focus, ARIA tab patterns, live workflow status, and Escape handling.
+- Reduced-motion support. No-JavaScript fallback keeps page content and FAQ available, with a notice explaining the interactive areas.
 
-```bash
-npx serve .
-# or
-python3 -m http.server 8080
-```
+## Files
 
-Then open `http://localhost:8080` (or whatever port your server picks).
+| Path                        | Purpose                                                               |
+| --------------------------- | --------------------------------------------------------------------- |
+| `index.html`                | Page structure, copy, inline SVGs, social metadata                    |
+| `css/style.css`             | Design tokens, components, responsive layouts, motion preferences     |
+| `css/motion.css`            | Progressive motion layer, light effects, and reduced-motion overrides |
+| `js/script.js`              | Navigation, workflows, walkthrough, pricing, plan previews            |
+| `js/app.js`                 | Motion, section tracking, header state                                |
+| `fonts/`                    | Local fonts and open font licenses                                    |
+| `images/og-apex-v2.png`     | 1200 × 630 social sharing image                                       |
+| `scripts/social-cover.html` | Editable HTML source for the social image                             |
 
----
+To export the social cover, open its HTML source on the local server at a 1200 × 630 viewport and capture it at device scale factor 1. The new image filename helps link previews pick up the redesign after deployment; a service may still retain an already-shared preview in its cache.
 
-## Deploying to GitHub Pages
+## Validation
 
-1. Push this folder to the `main` branch of the `apex-saas` repository
-2. Go to **Settings → Pages → Source → Deploy from branch → `main` / root**
-3. The site goes live at `https://<username>.github.io/apex-saas/` within a couple of minutes
+Browser checks cover all three workflow runs, switching during a run, keyboard tabs, approval/reset, every pricing/billing combination, plan capacity warnings, dialog focus restoration, the mobile menu, FAQ, reduced motion, and the no-JavaScript fallback.
 
----
+Layouts were checked at 320, 390, 540, 679, 680, 768, 959, 1024, 1280, 1440, and 1920 pixels, including the largest yearly price. No horizontal page overflow, missing assets, external runtime requests, or browser errors were found in Chromium.
 
-*Built by [ShevDevWorks](https://github.com/shevdevworks) — demo project, open for freelance work.*
+## Publishing
+
+The project remains a static site compatible with GitHub Pages. Commit and push the verified changes when ready. The canonical URL and social image URL currently point to the existing `shevdevworks.github.io/apex-saas/` deployment.

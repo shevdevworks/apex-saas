@@ -1,0 +1,271 @@
+/* Motion is a progressive layer: the base page remains complete without it. */
+.hero-line-mask {
+  overflow: clip;
+  padding-bottom: 0.075em;
+  margin-bottom: -0.075em;
+}
+.hero-line-content {
+  transform-origin: 0 100%;
+}
+.motion-ready .hero-agent {
+  transform: rotate(-3deg) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  box-shadow:
+    0 32px 75px #20368d27,
+    0 3px 9px #142a6f0d,
+    inset 0 1px 0 #fff;
+  backface-visibility: hidden;
+}
+.motion-ready .hero-agent::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at var(--light-x, 50%) 0%, #ffffff55, transparent 65%);
+  border-radius: inherit;
+}
+.ribbon-glint {
+  opacity: 0.75;
+  stroke-dasharray: 75 925;
+  stroke-dashoffset: 1000;
+  animation: ribbon-light-pass 7s linear infinite;
+  animation-play-state: paused;
+}
+.hero-art.is-live .ribbon-glint {
+  animation-play-state: running;
+}
+.motion-ready .hero-art .agent-routing i::after {
+  animation: route-signal 3.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation-play-state: paused;
+}
+.motion-ready .hero-art .agent-routing i:last-of-type::after {
+  animation-delay: 0.25s;
+}
+.motion-ready .hero-art.is-live .agent-routing i::after {
+  animation-play-state: running;
+}
+.motion-toggle {
+  position: absolute;
+  bottom: -6px;
+  right: 6px;
+  z-index: 6;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #d5dff2;
+  border-radius: 50%;
+  color: #607392;
+  background: #f3f6ffdf;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+}
+.motion-toggle svg {
+  width: 17px;
+  height: 17px;
+}
+.motion-toggle:hover {
+  background: #e1e9ff;
+  border-color: #afc0ed;
+}
+.motion-ready .art-caption {
+  right: 46px;
+}
+.workspace-shell {
+  transform-origin: 50% 45%;
+}
+.scenario-tabs {
+  position: relative;
+}
+.tab-motion-indicator {
+  pointer-events: none;
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--blue);
+  transition:
+    width 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.motion-ready .scenario-tabs > button[aria-selected='true'] {
+  border-bottom-color: transparent;
+}
+.motion-ready .flow-node {
+  transition:
+    border-color 0.25s,
+    background 0.25s,
+    box-shadow 0.25s,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.motion-ready .network-lines .network-signal {
+  stroke-dasharray: 32 800;
+  animation: network-packet 4.6s ease-in-out infinite;
+  animation-play-state: paused;
+  opacity: 0.9;
+}
+.motion-ready .integration-map.is-live .network-signal {
+  animation-play-state: running;
+}
+.motion-ready .network-center::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  border: 1px solid #c1d0ff;
+  opacity: 0;
+  animation: hub-breath 4.6s ease-out infinite;
+  animation-delay: 1.4s;
+  animation-play-state: paused;
+  pointer-events: none;
+}
+.motion-ready .integration-map.is-live .network-center::after {
+  animation-play-state: running;
+}
+#starter-price,
+#growth-price,
+#volume-output {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+}
+.faq-list details > div {
+  overflow: hidden;
+}
+.motion-ready .faq-list details > div {
+  padding-bottom: 0;
+}
+.motion-ready .faq-list details > div > p {
+  padding-bottom: 24px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .motion-ready .button {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition:
+      background 0.25s,
+      color 0.25s,
+      box-shadow 0.3s,
+      translate 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .motion-ready .button:hover {
+    translate: 0 -2px;
+  }
+  .motion-ready .button:active {
+    translate: 0 0;
+  }
+  .motion-ready .button::after {
+    content: '';
+    pointer-events: none;
+    position: absolute;
+    inset: -100% -45%;
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      #fff2 47%,
+      #fff4 50%,
+      #fff2 53%,
+      transparent 65%
+    );
+    transform: translateX(-80%);
+    opacity: 0;
+  }
+  .motion-ready .button:hover::after {
+    animation: button-light-pass 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .motion-ready .flow-node:hover:not(:disabled) {
+    transform: translateY(-3px);
+  }
+  .motion-ready .network-app {
+    transition:
+      background 0.25s,
+      border-color 0.25s;
+  }
+  .motion-ready .network-app:hover {
+    background: #263957;
+    border-color: #7392c5;
+  }
+}
+@media (max-width: 679px) {
+  .motion-toggle {
+    width: 28px;
+    height: 28px;
+    bottom: -8px;
+    right: 0;
+  }
+  .motion-ready .art-caption {
+    left: 0;
+    right: 32px;
+  }
+}
+@media (max-width: 389px) {
+  .motion-toggle {
+    bottom: -18px;
+  }
+}
+@keyframes ribbon-light-pass {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+@keyframes hub-breath {
+  0%,
+  28% {
+    scale: 1;
+    opacity: 0;
+  }
+  32% {
+    opacity: 0.5;
+  }
+  70%,
+  100% {
+    scale: 1.35;
+    opacity: 0;
+  }
+}
+@keyframes button-light-pass {
+  0% {
+    transform: translateX(-70%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(70%);
+    opacity: 0;
+  }
+}
+html[data-motion='off'] *,
+html[data-motion='off'] *::before,
+html[data-motion='off'] *::after {
+  animation: none !important;
+  transition: none !important;
+}
+html[data-motion='off'] {
+  scroll-behavior: auto;
+}
+html[data-motion='off'] .ribbon-glint,
+html[data-motion='off'] .network-signal,
+html[data-motion='off'] .network-center::after {
+  opacity: 0;
+}
+html[data-motion='off'] .button:hover {
+  translate: none;
+}
+html[data-motion='off'] .flow-node:hover:not(:disabled) {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .ribbon-glint,
+  .network-signal,
+  .network-center::after {
+    opacity: 0 !important;
+  }
+}

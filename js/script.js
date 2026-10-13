@@ -1,377 +1,463 @@
-/**
- * script.js — ApexSaaS Navigation + Pricing Calculator
- *
- * Modules:
- *   1. initSmoothScroll    — smooth anchor scrolling
- *   2. initActiveNav       — IntersectionObserver for active nav link
- *   3. initBurger          — mobile nav drawer
- *   4. initHeaderScroll    — header backdrop on scroll
- *   5. initPricing         — pricing calculator (index-based architecture)
- *
- * Why pricing is here and not in app.js:
- *   app.js contained the old PricingCalculator using real min/max values.
- *   The new architecture is index-based (0–6). To avoid conflicts,
- *   the old call is disabled in app.js — this module is the sole owner of the slider.
- */
-
 'use strict';
 
+(() => {
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+  const setText = (id, value) => {
+    document.getElementById(id).textContent = value;
+  };
+  const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const noMotion = () => motion.matches || document.documentElement.dataset.motion === 'off';
+  const notifyMotion = (name, detail = {}) =>
+    document.dispatchEvent(new CustomEvent(`apex:${name}`, { detail }));
 
-/* ============================================================
-   1. SMOOTH SCROLL
-============================================================ */
-function initSmoothScroll() {
-  document.querySelectorAll('.nav__link').forEach(link => {
-    link.addEventListener('click', e => {
-      const href = link.getAttribute('href');
-      if (!href?.startsWith('#')) return;
-      const target = document.querySelector(href);
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      closeMobileMenu();
-    });
+  // The mobile navigation is a disclosure, with normal document tab order.
+  const menuButton = $('.menu-toggle');
+  const menu = $('#mobile-menu');
+  function setMenu(open, restoreFocus = false) {
+    menu.hidden = !open;
+    menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (restoreFocus) menuButton.focus();
+  }
+  menuButton.addEventListener('click', () => setMenu(menu.hidden));
+  $$('a', menu).forEach((link) => link.addEventListener('click', () => setMenu(false)));
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !menu.hidden) setMenu(false, true);
   });
-}
-
-
-/* ============================================================
-   2. ACTIVE LINK — IntersectionObserver
-   Winner algorithm: the section with the highest
-   intersectionRatio at any given moment wins.
-============================================================ */
-function initActiveNav() {
-  const navLinks = document.querySelectorAll('.nav__links .nav__link');
-  if (!navLinks.length) return;
-
-  const linkMap = new Map();
-  navLinks.forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href?.startsWith('#')) return;
-    const id = href.slice(1);
-    if (document.getElementById(id)) linkMap.set(id, link);
+  document.addEventListener('click', (event) => {
+    if (!menu.hidden && !event.target.closest('.site-header')) setMenu(false);
   });
-  if (!linkMap.size) return;
+  window.matchMedia('(min-width: 680px)').addEventListener('change', (event) => {
+    if (event.matches) setMenu(false);
+  });
 
-  const visibilityMap = new Map();
-  linkMap.forEach((_, id) => visibilityMap.set(id, 0));
-
-  function updateActiveLink() {
-    let maxRatio = -1;
-    let activeId = null;
-    visibilityMap.forEach((ratio, id) => {
-      if (ratio > maxRatio) { maxRatio = ratio; activeId = id; }
-    });
-    linkMap.forEach((link, id) => {
-      link.classList.toggle('nav__link--active', id === activeId && maxRatio > 0);
+  // Both product tabsets support arrows, Home and End; only the active tab
+  // participates in the document's tab sequence.
+  function bindTabs(container, attribute, onSelect) {
+    const tabs = $$('[role="tab"]', container);
+    const vertical = container.getAttribute('aria-orientation') === 'vertical';
+    function select(tab, focus = false) {
+      tabs.forEach((item) => {
+        const selected = item === tab;
+        item.setAttribute('aria-selected', String(selected));
+        item.tabIndex = selected ? 0 : -1;
+      });
+      const panel = document.getElementById(tab.getAttribute('aria-controls'));
+      panel.setAttribute('aria-labelledby', tab.id);
+      onSelect(tab.dataset[attribute]);
+      if (focus) tab.focus();
+    }
+    tabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (event) => {
+        const next = vertical ? 'ArrowDown' : 'ArrowRight';
+        const previous = vertical ? 'ArrowUp' : 'ArrowLeft';
+        let target;
+        if (event.key === next) target = (index + 1) % tabs.length;
+        if (event.key === previous) target = (index - 1 + tabs.length) % tabs.length;
+        if (event.key === 'Home') target = 0;
+        if (event.key === 'End') target = tabs.length - 1;
+        if (target !== undefined) {
+          event.preventDefault();
+          select(tabs[target], true);
+        }
+      });
     });
   }
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => visibilityMap.set(e.target.id, e.intersectionRatio));
-    updateActiveLink();
-  }, {
-    rootMargin: '-15% 0px -70% 0px',
-    threshold: Array.from({ length: 21 }, (_, i) => i / 20),
-  });
+  const scenarios = {
+    leads: {
+      title: 'A warm welcome, without the handoff.',
+      description: 'From a new form submission to an informed account owner.',
+      trigger: [
+        'New inbound lead',
+        'Website form · HubSpot',
+        'Ready to listen',
+        'i-hub',
+        'app-orange',
+      ],
+      process: ['Find the right owner', 'Match region + account size', 'Your rules, applied'],
+      action: [
+        'Give sales a heads-up',
+        '#new-leads · Slack',
+        'Context included',
+        'i-slack',
+        'app-purple',
+      ],
+      details: [
+        [
+          'A lead enters the flow',
+          'Sample: Morgan from Northstar submits a request. Team size: 80. Region: Europe.',
+        ],
+        [
+          'The rules find a match',
+          'Europe + more than 50 people → assign to the enterprise sales team.',
+        ],
+        [
+          'The team gets the context',
+          'A Slack message includes the request, the account owner, and a link to the sample CRM record.',
+        ],
+      ],
+      completion: [
+        'Lead routed. Team in the loop.',
+        'Northstar → enterprise sales → #new-leads. Three steps completed with sample data.',
+      ],
+    },
+    support: {
+      title: 'The right request. The right person.',
+      description: 'Give incoming requests a clear route to a useful answer.',
+      trigger: [
+        'New support request',
+        '#help-desk · Slack',
+        'Ready to listen',
+        'i-slack',
+        'app-purple',
+      ],
+      process: ['Sort by priority', 'Topic + urgency + owner', 'Your rules, applied'],
+      action: [
+        'Create a clear next step',
+        'Support queue · Linear',
+        'Details attached',
+        'i-linear',
+        'app-blue',
+      ],
+      details: [
+        [
+          'A request enters the flow',
+          'Sample: “Our export is failing before a deadline.” Received in the team’s help channel.',
+        ],
+        [
+          'The request gets a priority',
+          'Export issue + deadline today → high priority. Route to the product support team.',
+        ],
+        [
+          'A ticket has an owner',
+          'Create a sample Linear issue with the original message, priority, and assigned team.',
+        ],
+      ],
+      completion: [
+        'Request sorted. Next step clear.',
+        'Export issue → high priority → product support. The original context stays with the task.',
+      ],
+    },
+    release: {
+      title: 'Ship the update. Skip the update-about-the-update.',
+      description: 'Keep the whole team in the loop when a new version lands.',
+      trigger: [
+        'A release is published',
+        'Version 2.4 · GitHub',
+        'Ready to listen',
+        'i-github',
+        'app-ink',
+      ],
+      process: ['Prepare a clear summary', 'Changes + fixes + links', 'Context, organized'],
+      action: [
+        'Share the good news',
+        '#product-updates · Slack',
+        'Ready for the team',
+        'i-slack',
+        'app-purple',
+      ],
+      details: [
+        [
+          'A release enters the flow',
+          'Sample: version 2.4 is published with four changes and two fixes in GitHub.',
+        ],
+        [
+          'The details become a digest',
+          'Group the changes, highlight the fixes, and include the release link in a short update.',
+        ],
+        [
+          'Everyone gets the update',
+          'Post the sample release digest to #product-updates, with a link back to the full notes.',
+        ],
+      ],
+      completion: [
+        'Release shipped. Everyone caught up.',
+        'Version 2.4 → release digest → #product-updates. A complete handoff, using sample data.',
+      ],
+    },
+  };
 
-  linkMap.forEach((_, id) => {
-    const el = document.getElementById(id);
-    if (el) observer.observe(el);
-  });
-}
+  const nodes = $$('.flow-node');
+  const canvas = $('#flow-canvas');
+  const runButton = $('#run-flow');
+  let activeScenario = 'leads';
+  let runVersion = 0;
+  let running = false;
+  let demoTimer;
 
-
-/* ============================================================
-   3. MOBILE MENU
-============================================================ */
-function closeMobileMenu(returnFocus = false) {
-  const burger    = document.querySelector('.nav__burger');
-  const mobileNav = document.getElementById('mobile-nav');
-  if (!burger || !mobileNav) return;
-  burger.setAttribute('aria-expanded', 'false');
-  mobileNav.setAttribute('aria-hidden', 'true');
-  // On Escape close, return focus to the burger button — otherwise focus
-  // disappears into the now-hidden drawer, breaking keyboard navigation.
-  if (returnFocus) burger.focus();
-}
-
-function initBurger() {
-  const burger    = document.querySelector('.nav__burger');
-  const mobileNav = document.getElementById('mobile-nav');
-  const header    = document.getElementById('header');
-  if (!burger || !mobileNav) return;
-
-  burger.addEventListener('click', () => {
-    const isOpen = burger.getAttribute('aria-expanded') === 'true';
-    burger.setAttribute('aria-expanded', String(!isOpen));
-    mobileNav.setAttribute('aria-hidden', String(isOpen));
-
-    // On open — move focus to the first menu link.
-    // Without this, keyboard/screen-reader users have no indication
-    // the menu opened — focus just stays on the burger button.
-    if (!isOpen) {
-      mobileNav.querySelector('a')?.focus();
+  function inspect(title, description) {
+    setText('inspector-status', title);
+    setText('inspector-text', description);
+  }
+  function selectScenario(key) {
+    clearTimeout(demoTimer);
+    runVersion += 1; // Invalidate any awaited step of a previous run.
+    running = false;
+    activeScenario = key;
+    const scenario = scenarios[key];
+    setText('flow-title', scenario.title);
+    setText('flow-description', scenario.description);
+    for (const type of ['trigger', 'process', 'action']) {
+      const [title, subtitle, meta, icon, color] = scenario[type];
+      setText(`${type}-title`, title);
+      setText(`${type}-subtitle`, subtitle);
+      setText(`${type}-meta`, meta);
+      if (icon) {
+        const app = $(`#${type}-icon`);
+        app.className = `app-icon ${color}`;
+        $('use', app).setAttribute('href', `#${icon}`);
+      }
     }
-  });
+    nodes.forEach((node, index) => {
+      node.disabled = false;
+      node.classList.remove('is-active', 'is-done');
+      node.setAttribute('aria-pressed', 'false');
+      $('.node-number', node).textContent = `0${index + 1}`;
+    });
+    canvas.dataset.step = 'idle';
+    runButton.disabled = false;
+    $('span', runButton).textContent = 'Run workflow';
+    inspect('Ready when you are', 'Run the sample workflow, or select a step to see what happens.');
+    notifyMotion('scenario', { key });
+  }
+  const delay = (ms) => new Promise((resolve) => window.setTimeout(resolve, ms));
 
-  document.addEventListener('click', e => {
-    if (!header?.contains(e.target)) closeMobileMenu();
-  });
-
-  // Escape closes the menu and returns focus to the burger button —
-  // standard accessibility pattern for disclosure menus.
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && burger.getAttribute('aria-expanded') === 'true') {
-      closeMobileMenu(true);
+  async function runFlow() {
+    clearTimeout(demoTimer);
+    if (running) return;
+    running = true;
+    const version = ++runVersion;
+    const scenario = scenarios[activeScenario];
+    const instant = noMotion();
+    nodes.forEach((node, index) => {
+      node.disabled = true;
+      node.classList.remove('is-active', 'is-done');
+      node.setAttribute('aria-pressed', 'false');
+      $('.node-number', node).textContent = `0${index + 1}`;
+    });
+    runButton.disabled = true;
+    $('span', runButton).textContent = 'Running…';
+    for (let step = 0; step < 3; step += 1) {
+      if (version !== runVersion) return;
+      canvas.dataset.step = String(step);
+      setText(`${['trigger', 'process', 'action'][step]}-meta`, 'Processing sample…');
+      nodes.forEach((node) => node.classList.remove('is-active'));
+      nodes[step].classList.add('is-active');
+      notifyMotion('step', { step });
+      if (!instant) inspect(...scenario.details[step]);
+      if (!instant) await delay(step === 0 ? 850 : 1100);
+      if (version !== runVersion) return;
+      nodes[step].classList.add('is-done');
+      $('.node-number', nodes[step]).textContent = '✓';
+      setText(
+        `${['trigger', 'process', 'action'][step]}-meta`,
+        ['Trigger received', 'Step completed', 'Action completed'][step],
+      );
     }
+    nodes.forEach((node) => {
+      node.disabled = false;
+      node.classList.remove('is-active');
+    });
+    canvas.dataset.step = 'done';
+    inspect(...scenario.completion);
+    runButton.disabled = false;
+    $('span', runButton).textContent = 'Run again';
+    running = false;
+    notifyMotion('complete');
+  }
+
+  bindTabs($('.scenario-tabs'), 'scenario', selectScenario);
+  runButton.addEventListener('click', runFlow);
+  nodes.forEach((node, index) =>
+    node.addEventListener('click', () => {
+      nodes.forEach((item) => item.setAttribute('aria-pressed', String(item === node)));
+      inspect(...scenarios[activeScenario].details[index]);
+    }),
+  );
+  $('[data-demo-link]').addEventListener('click', (event) => {
+    event.preventDefault();
+    $('#workspace').scrollIntoView({ behavior: noMotion() ? 'instant' : 'smooth' });
+    clearTimeout(demoTimer);
+    demoTimer = setTimeout(
+      () => {
+        runButton.focus({ preventScroll: true });
+        runFlow();
+      },
+      noMotion() ? 0 : 650,
+    );
   });
-}
 
+  bindTabs($('.how-steps'), 'how', (key) => {
+    $$('.setup-view').forEach((view) => {
+      view.hidden = view.dataset.view !== key;
+    });
+    notifyMotion('walkthrough', { key });
+  });
+  let approved = false;
+  $('#approve-example').addEventListener('click', () => {
+    approved = !approved;
+    setText('approval-status', approved ? 'Approved' : 'Your call');
+    $('#approve-example span').textContent = approved
+      ? 'Reset the example'
+      : 'Approve this example';
+    setText(
+      'approval-result',
+      approved ? 'Approved. The sample update can continue to the team.' : '',
+    );
+    notifyMotion('approval', { approved });
+  });
 
-/* ============================================================
-   4. HEADER BACKDROP
-   IntersectionObserver on a sentinel element — more efficient
-   than a scroll event listener.
-============================================================ */
-function initHeaderScroll() {
-  const header = document.getElementById('header');
-  if (!header) return;
-
-  const sentinel = document.createElement('div');
-  sentinel.style.cssText =
-    'position:absolute;top:80px;left:0;width:1px;height:1px;pointer-events:none;';
-  document.body.prepend(sentinel);
-
-  new IntersectionObserver(
-    ([entry]) => header.classList.toggle('header--scrolled', !entry.isIntersecting),
-    { threshold: 0 }
-  ).observe(sentinel);
-}
-
-
-/* ============================================================
-   5. PRICING CALCULATOR — index-based architecture
-   The slider uses 7 discrete indices (0-6) instead of raw user
-   counts, so the thumb snaps evenly to each tick label instead
-   of drifting between unevenly spaced values. See TIERS below
-   for the index -> users/tier/price mapping.
-============================================================ */
-function initPricing() {
-
-  /* ── Tier data ── */
-  const TIERS = [
-    { index: 0, users: 1_000,   label: '1,000 users',   card: 'starter',    proPrice: 99  },
-    { index: 1, users: 2_000,   label: '2,000 users',   card: 'starter',    proPrice: 99  },
-    { index: 2, users: 5_000,   label: '5,000 users',   card: 'pro',        proPrice: 149 },
-    { index: 3, users: 10_000,  label: '10,000 users',  card: 'pro',        proPrice: 199 },
-    { index: 4, users: 25_000,  label: '25,000 users',  card: 'pro',        proPrice: 249 },
-    { index: 5, users: 50_000,  label: '50,000 users',  card: 'enterprise', proPrice: 349 },
-    { index: 6, users: 100_000, label: '100,000 users', card: 'enterprise', proPrice: 449 },
+  // Discrete volumes map to an explicit recommendation. Prices are stored in
+  // cents so the advertised 20% discount and the annual total remain exact.
+  const tiers = [
+    { volume: 1000, plan: 'starter', growth: 3900 },
+    { volume: 2500, plan: 'growth', growth: 3900 },
+    { volume: 5000, plan: 'growth', growth: 7900 },
+    { volume: 10000, plan: 'growth', growth: 12900 },
+    { volume: 25000, plan: 'growth', growth: 24900 },
+    { volume: 50000, plan: 'scale', growth: 24900 },
+    { volume: 100000, plan: 'scale', growth: 24900 },
   ];
-
-  const STARTER_BASE_PRICE = 49;
-  const MAX_INDEX          = TIERS.length - 1; // 6
-  const YEARLY_DISCOUNT    = 0.20;
-
-  /* ── DOM refs ── */
-  const slider         = document.getElementById('user-slider');
-  const sliderOutput   = document.getElementById('slider-output');
-  const sliderWrap     = slider?.closest('.slider-wrap');
-  const billingBtn     = document.getElementById('billing-btn');
-
-  const starterCard    = document.querySelector('[data-tier="starter"]');
-  const proCard        = document.querySelector('[data-tier="pro"]');
-  const enterpriseCard = document.querySelector('[data-tier="enterprise"]');
-
-  const starterPrice   = document.getElementById('starter-price');
-  const starterNote    = document.getElementById('starter-note');
-  const proPrice       = document.getElementById('pro-price');
-  const proNote        = document.getElementById('pro-note');
-
-  const coverageBlock  = document.getElementById('coverage-block');
-  const coverageFill   = document.getElementById('coverage-fill');
-  const coverageLabel  = document.getElementById('coverage-label');
-
-  // Guard: bail out if critical DOM elements are missing
-  if (!slider || !billingBtn || !starterCard || !proCard || !enterpriseCard) {
-    console.warn('PricingCalculator: required DOM elements not found, init skipped.');
-    return;
+  const planNames = { starter: 'Starter', growth: 'Growth', scale: 'Scale' };
+  const volumeInput = $('#volume');
+  let yearly = false;
+  const formatCount = (value) => value.toLocaleString('en-US');
+  const formatMoney = (cents) =>
+    (cents / 100).toLocaleString('en-US', {
+      minimumFractionDigits: cents % 100 ? 2 : 0,
+      maximumFractionDigits: 2,
+    });
+  const priceFor = (cents) => (yearly ? Math.round(cents * 0.8) : cents);
+  function currentTier() {
+    return tiers[Math.max(0, Math.min(6, Number(volumeInput.value)))];
   }
-
-  /* ── State ── */
-  let isYearly     = false;
-  let currentIndex = parseInt(slider.value, 10); // initial index from HTML value="2"
-
-  /* ── Utilities ── */
-
-  /**
-   * Calculates the final monthly price applying the yearly discount if active.
-   * @param {number} base — base price in USD
-   * @returns {number} — rounded final price
-   */
-  function calcPrice(base) {
-    return isYearly ? Math.round(base * (1 - YEARLY_DISCOUNT)) : base;
+  function volumeLabel(tier) {
+    return formatCount(tier.volume) + (tier.volume === 100000 ? '+' : '');
   }
-
-  /**
-   * Formats a number to a string with thousands separators.
-   * 12480 → "12,480"
-   * @param {number} n
-   * @returns {string}
-   */
-  function fmt(n) {
-    return n.toLocaleString('en-US');
-  }
-
-  /* Fills the track up to the thumb center.
-     CSS turns --progress into a width that accounts for the thumb size
-     (see .slider-fill-track), so the fill and tick labels match the thumb. */
-  function updateFill(index) {
-    sliderWrap?.style.setProperty('--progress', String(index / MAX_INDEX));
-  }
-
-  /* ── Active card ──
-     Sets .pcard--slider-active on the matching card only.
-     All visuals (dimming inactive cards, lift, glow) live in CSS —
-     inline styles here used to fight the GSAP reveal tween.
-  ─────────────────────────────────────────────────────── */
-  const allCards = [starterCard, proCard, enterpriseCard];
-
-  function updateActiveCard(cardName) {
-    const target = { starter: starterCard, pro: proCard, enterprise: enterpriseCard }[cardName];
-    allCards.forEach(card => card.classList.toggle('pcard--slider-active', card === target));
-  }
-
-  /* ── Coverage bar (Pro tier only) ──
-     Shows how much of the selected volume the Pro plan covers.
-     Pro max = 25K users (index 4).
-     If volume exceeds 25K — red warning state.
-  ─────────────────────────────────────────────────────────── */
-  const PRO_MAX_USERS = 25_000;
-
-  function updateCoverage(users, isProActive) {
-    if (!coverageFill || !coverageLabel || !coverageBlock) return;
-
-    // The coverage bar reflects Pro plan capacity — only show it when
-    // Pro is the active tier. On Starter/Enterprise the message
-    // "Covers your selected volume" would refer to the Pro plan, not
-    // the selected tier, which is misleading.
-    if (!isProActive) {
-      coverageBlock.style.display = 'none';
-      return;
+  function updatePricing() {
+    const tier = currentTier();
+    const label = volumeLabel(tier);
+    setText('volume-output', label);
+    volumeInput.setAttribute('aria-valuetext', `${label} automations per month`);
+    volumeInput.style.setProperty('--fill', `${(Number(volumeInput.value) / 6) * 100}%`);
+    setText(
+      'pricing-recommendation',
+      `For ${label} automations, ${planNames[tier.plan]} is your fit.`,
+    );
+    $$('.plan').forEach((card) => {
+      const selected = card.dataset.plan === tier.plan;
+      card.classList.toggle('recommended', selected);
+      $('.plan-fit', card).hidden = !selected;
+    });
+    for (const [key, base] of [
+      ['starter', 1900],
+      ['growth', tier.growth],
+    ]) {
+      const price = priceFor(base);
+      setText(`${key}-price`, formatMoney(price));
+      setText(
+        `${key}-note`,
+        yearly
+          ? `$${formatMoney(price * 12)} billed yearly`
+          : `$${formatMoney(price)} billed monthly`,
+      );
     }
-    coverageBlock.style.display = '';
-
-    const pct     = Math.min((users / PRO_MAX_USERS) * 100, 100);
-    const exceeds = users > PRO_MAX_USERS;
-
-    coverageFill.style.width = `${pct}%`;
-    coverageBlock.classList.toggle('coverage--exceeds', exceeds);
-
-    coverageLabel.textContent = exceeds
-      ? '⚠ Exceeds Pro plan — see Enterprise'
-      : `✓ Covers your selected volume (${Math.round(pct)}% of cap)`;
+    setText(
+      'growth-capacity',
+      `${formatCount(Math.max(2500, Math.min(tier.volume, 25000)))} automations per month`,
+    );
+    notifyMotion('pricing');
   }
+  volumeInput.addEventListener('input', updatePricing);
+  volumeInput.addEventListener('change', updatePricing);
+  $$('[data-billing]').forEach((button) =>
+    button.addEventListener('click', () => {
+      yearly = button.dataset.billing === 'yearly';
+      $$('[data-billing]').forEach((item) =>
+        item.setAttribute('aria-pressed', String(item === button)),
+      );
+      updatePricing();
+    }),
+  );
+  updatePricing();
 
-  /* ── Main render function ──
-     Called on any state change
-     (index update or billing cycle toggle).
-  ─────────────────────────────────────────── */
-  function render() {
-    const tier = TIERS[currentIndex];
-
-    /* 1. Label above the slider */
-    if (sliderOutput) sliderOutput.textContent = tier.label;
-
-    /* 2. Update ARIA values for screen readers */
-    slider.setAttribute('aria-valuenow',  String(tier.users));
-    slider.setAttribute('aria-valuetext', tier.label);
-
-    /* 3. Track fill */
-    updateFill(currentIndex);
-
-    /* 4. Active card highlight */
-    updateActiveCard(tier.card);
-
-    /* 5. Prices */
-    const newStarterPrice = calcPrice(STARTER_BASE_PRICE);
-    const newProPrice     = calcPrice(tier.proPrice);
-
-    if (starterPrice) starterPrice.textContent = fmt(newStarterPrice);
-    if (proPrice) {
-      // If Enterprise is active — hide the numeric Pro price
-      proPrice.textContent = tier.card === 'enterprise' ? '—' : fmt(newProPrice);
-    }
-
-    /* 6. Billing cycle notes */
-    if (starterNote) {
-      starterNote.textContent = isYearly
-        ? `Billed yearly · $${fmt(newStarterPrice * 12)}/yr`
-        : `Billed monthly · $${newStarterPrice}/mo`;
-    }
-    if (proNote) {
-      proNote.textContent = tier.card === 'enterprise'
-        ? 'Volume exceeds Pro plan — see Enterprise'
-        : isYearly
-          ? `Billed yearly · $${fmt(newProPrice * 12)}/yr`
-          : `Billed monthly · $${newProPrice}/mo`;
-    }
-
-    /* 7. Coverage bar */
-    updateCoverage(tier.users, tier.card === 'pro');
-  }
-
-  /* ── Event handlers ── */
-
-  /**
-   * input  — fires on every thumb movement.
-   * change — fires on release (fallback for some browsers).
-   * We listen to both for maximum compatibility.
-   */
-  function onSliderChange() {
-    currentIndex = parseInt(slider.value, 10);
-    render();
-  }
-
-  slider.addEventListener('input',  onSliderChange);
-  slider.addEventListener('change', onSliderChange);
-
-  /**
-   * Keyboard navigation for the slider.
-   * ArrowLeft/Right and ArrowDown/Up are handled natively by the browser,
-   * but we call render() on top of that for an immediate UI update.
-   */
-  slider.addEventListener('keydown', () => {
-    // setTimeout(0) lets the browser update .value before we read it
-    setTimeout(() => {
-      currentIndex = parseInt(slider.value, 10);
-      render();
-    }, 0);
+  const dialog = $('#plan-dialog');
+  const planDescriptions = {
+    starter: [
+      'Your first flow starts here.',
+      'A focused workspace for a few useful automations. Start with one repetitive task and give it a clear path.',
+    ],
+    growth: [
+      'More room for good work.',
+      'A workspace for connected processes, conditional steps, and the moments that need a human decision.',
+    ],
+    scale: [
+      'A fit for the bigger picture.',
+      'A workspace concept for larger operations, with tailored volumes and more control across teams.',
+    ],
+  };
+  $$('[data-preview-plan]').forEach((button) =>
+    button.addEventListener('click', () => {
+      const plan = button.dataset.previewPlan;
+      const tier = currentTier();
+      const [title, description] = planDescriptions[plan];
+      setText('plan-dialog-title', title);
+      const selectedVolume =
+        plan === 'starter'
+          ? 1000
+          : plan === 'growth'
+            ? Math.max(2500, Math.min(tier.volume, 25000))
+            : tier.volume;
+      const exceeded = plan !== 'scale' && tier.volume > selectedVolume;
+      setText(
+        'plan-dialog-description',
+        description +
+          (exceeded
+            ? ` Your selected volume exceeds this plan; ${planNames[tier.plan]} is the suggested fit.`
+            : ''),
+      );
+      setText('summary-plan', planNames[plan]);
+      setText(
+        'summary-volume',
+        plan === 'scale' ? `${volumeLabel(tier)} · Custom` : formatCount(selectedVolume),
+      );
+      setText(
+        'summary-billing',
+        plan === 'scale' ? 'Custom agreement' : yearly ? 'Yearly · save 20%' : 'Monthly',
+      );
+      const cents = priceFor(plan === 'starter' ? 1900 : tier.growth);
+      setText(
+        'summary-price',
+        plan === 'scale'
+          ? 'Tailored pricing'
+          : yearly
+            ? `$${formatMoney(cents * 12)} / year`
+            : `$${formatMoney(cents)} / month`,
+      );
+      dialog.showModal();
+      document.body.classList.add('dialog-open');
+      notifyMotion('dialog');
+    }),
+  );
+  $('.dialog-close', dialog).addEventListener('click', () => dialog.close());
+  dialog.addEventListener('click', (event) => {
+    if (event.target !== dialog) return;
+    const box = dialog.getBoundingClientRect();
+    if (
+      event.clientX < box.left ||
+      event.clientX > box.right ||
+      event.clientY < box.top ||
+      event.clientY > box.bottom
+    )
+      dialog.close();
   });
-
-  /**
-   * Billing toggle — Monthly ↔ Yearly.
-   * aria-checked=true → Yearly (20% discount applied).
-   */
-  billingBtn.addEventListener('click', () => {
-    isYearly = !isYearly;
-    billingBtn.setAttribute('aria-checked', String(isYearly));
-    render();
+  dialog.addEventListener('close', () => document.body.classList.remove('dialog-open'));
+  $('#dialog-try-flow').addEventListener('click', () => {
+    dialog.close();
+    $('#workspace').scrollIntoView({ behavior: noMotion() ? 'instant' : 'smooth' });
+    runButton.focus({ preventScroll: true });
   });
-
-  /* ── Initial render on page load ── */
-  render();
-}
-
-
-/* ============================================================
-   INIT
-============================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-  initHeaderScroll();
-  initBurger();
-  initSmoothScroll();
-  initActiveNav();
-  initPricing();
-});
+})();

@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=1200" />
+    <title>ApexSaaS — Social cover</title>
+    <link rel="stylesheet" href="../css/style.css" />
+    <style>
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+        margin: 0;
+        background: #f3f6ff;
+      }
+      body {
+        position: relative;
+      }
+      .cover-brand {
+        position: absolute;
+        left: 56px;
+        top: 42px;
+        font-size: 28px;
+      }
+      .cover-brand .brand-mark {
+        width: 38px;
+        height: 38px;
+      }
+      .cover-type {
+        position: absolute;
+        right: 57px;
+        top: 50px;
+        font-size: 12px;
+        color: #52627b;
+      }
+      .cover-copy {
+        position: absolute;
+        left: 56px;
+        top: 183px;
+        z-index: 4;
+      }
+      .cover-copy h1 {
+        font-size: 71px;
+        line-height: 1.05;
+        letter-spacing: -4.6px;
+      }
+      .cover-copy p {
+        font-size: 17px;
+        color: #52627b;
+        line-height: 1.8;
+        margin-top: 25px;
+      }
+      .cover-copy .cover-label {
+        display: inline-flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 600;
+        margin: 0 0 24px;
+        color: #3c5bff;
+      }
+      .hero-art {
+        position: absolute;
+        left: 640px;
+        top: 60px;
+        width: 580px;
+        height: 580px;
+        transform: scale(0.82);
+        transform-origin: top left;
+      }
+      .hero-art .flow-sculpture {
+        width: 660px;
+        left: -32px;
+        top: -39px;
+      }
+      .hero-art .hero-agent {
+        left: 80px;
+        top: 172px;
+        width: 410px;
+      }
+      .hero-art .hero-event {
+        top: 37px;
+        left: 18px;
+        width: 294px;
+      }
+      .hero-art .hero-delivered {
+        bottom: 48px;
+        right: -5px;
+      }
+      .art-caption {
+        display: none;
+      }
+      .cover-footer {
+        position: absolute;
+        left: 56px;
+        bottom: 36px;
+        right: 56px;
+        border-top: 1px solid #d9e2f4;
+        padding-top: 17px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
+        color: #52627b;
+      }
+      .cover-footer strong {
+        color: #14213d;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <svg class="svg-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <symbol id="i-apex" viewBox="0 0 32 32">
+        <path d="M3 26 13.2 6h6L29 26h-7L16.2 14 10 26Z" fill="currentColor" />
+        <path d="m14 22 3-6 4.8 10H12Z" fill="currentColor" opacity=".55" />
+      </symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" /></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24">
+        <path d="m9 5 10 7-10 7Z" fill="currentColor" stroke="none" />
+      </symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="m13 2-9 12h7l-1 8 10-12h-7Z" /></symbol>
+      <symbol id="i-sliders" viewBox="0 0 24 24">
+        <path d="M4 7h5m5 0h6M4 17h10m5 0h1M9 4v6m5 4v6" />
+      </symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24">
+        <rect x="4" y="4" width="6" height="6" rx="1" />
+        <rect x="14" y="4" width="6" height="6" rx="1" />
+        <rect x="4" y="14" width="6" height="6" rx="1" />
+        <rect x="14" y="14" width="6" height="6" rx="1" />
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path d="m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6Z" />
+        <path d="m8 12 3 3 5-6" />
+      </symbol>
+      <symbol id="i-branch" viewBox="0 0 24 24">
+        <circle cx="6" cy="5" r="2" />
+        <circle cx="6" cy="19" r="2" />
+        <circle cx="18" cy="5" r="2" />
+        <path d="M6 7v10m0-4c8 0 12-2 12-6" />
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6" /></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24">
+        <path
+          d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.18-3.37-1.18-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.58 9.58 0 0 1 12 6.99c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.69-4.57 4.94.36.31.68.92.68 1.85v2.58c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"
+          fill="currentColor"
+          stroke="none"
+        />
+      </symbol>
+      <symbol id="i-slack" viewBox="0 0 24 24">
+        <path
+          d="M9 2v9M2 9h9m4-7v9m7-2h-7M2 15h9m-2 7v-7m6 7v-7m7 0h-7"
+          stroke="currentColor"
+          stroke-width="4"
+          stroke-linecap="round"
+        />
+      </symbol>
+      <symbol id="i-linear" viewBox="0 0 24 24">
+        <path
+          d="M3 11a9 9 0 0 0 10 10ZM3 6l15 15M6 3l15 15M10 3l11 11M15 3l6 6"
+          stroke-width="2.5"
+        />
+      </symbol>
+      <symbol id="i-hub" viewBox="0 0 24 24">
+        <circle cx="15" cy="13" r="4" />
+        <circle cx="6" cy="4" r="2" />
+        <circle cx="6" cy="21" r="2" />
+        <path d="m7 6 5 4m0 6-4 4M16 9V3h4" />
+      </symbol>
+    </svg>
+    <div class="brand cover-brand">
+      <svg class="brand-mark" aria-hidden="true"><use href="#i-apex" /></svg
+      ><span>Apex<span class="brand-light">SaaS</span></span>
+    </div>
+    <span class="cover-type">An automation workspace, in flow.</span>
+    <div class="cover-copy">
+      <p class="cover-label"><span class="status-dot"></span> Less chasing. More creating.</p>
+      <h1>Great work.<br />Less busywork.</h1>
+      <p>Connect your tools. Find your flow.<br />Make room for the work that matters.</p>
+    </div>
+    <div
+      class="hero-art"
+      aria-label="Workflow preview: a new request is routed by Apex and delivered to the right team"
+    >
+      <svg class="flow-sculpture" viewBox="0 0 650 650" fill="none" aria-hidden="true">
+        <defs>
+          <linearGradient
+            id="ribbon-main"
+            x1="200"
+            y1="30"
+            x2="480"
+            y2="630"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#8099ff" />
+            <stop offset=".23" stop-color="#4769ff" />
+            <stop offset=".57" stop-color="#2344dd" />
+            <stop offset=".84" stop-color="#637aff" />
+            <stop offset="1" stop-color="#bed0ff" />
+          </linearGradient>
+          <linearGradient
+            id="ribbon-edge"
+            x1="100"
+            y1="550"
+            x2="480"
+            y2="130"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#1734b3" />
+            <stop offset=".47" stop-color="#2045e4" />
+            <stop offset="1" stop-color="#c5d2ff" />
+          </linearGradient>
+          <linearGradient
+            id="ribbon-light"
+            x1="40"
+            y1="400"
+            x2="540"
+            y2="240"
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stop-color="#172da2" />
+            <stop offset=".45" stop-color="#577bff" />
+            <stop offset=".83" stop-color="#a9c4ff" />
+            <stop offset="1" stop-color="#3c5bff" />
+          </linearGradient>
+          <filter id="ribbon-shadow" x="-40%" y="-40%" width="180%" height="180%">
+            <feGaussianBlur stdDeviation="18" />
+          </filter>
+        </defs>
+        <ellipse
+          cx="334"
+          cy="572"
+          rx="183"
+          ry="28"
+          fill="#3159ce"
+          opacity=".15"
+          filter="url(#ribbon-shadow)"
+        />
+        <path
+          class="sculpture-outline"
+          d="M110 565 269 121c22-60 82-60 105-5l184 437c20 46-15 76-62 57L99 446c-49-20-48-66 4-77l439-95"
+          stroke="#c6d3f2"
+          stroke-width="1.2"
+        />
+        <path
+          d="m110 529 142-392c19-52 71-57 94-3l167 388c17 42-7 63-46 48L111 433c-46-18-47-60 2-71l390-93"
+          stroke="#1f3cbc"
+          stroke-width="67"
+          stroke-linejoin="round"
+        />
+        <path
+          d="m113 516 144-392c19-52 70-57 93-3l167 388c17 42-7 63-46 48L115 420c-46-18-47-60 2-71l390-93"
+          stroke="url(#ribbon-main)"
+          stroke-width="63"
+          stroke-linejoin="round"
+        />
+        <path
+          d="m113 516 144-392c19-52 70-57 93-3l47 109"
+          stroke="url(#ribbon-edge)"
+          stroke-width="63"
+        />
+        <path d="m115 420c-46-18-47-60 2-71l390-93" stroke="url(#ribbon-light)" stroke-width="63" />
+        <path d="m115 389 388-93" stroke="#dce8ff" stroke-opacity=".6" stroke-width="1.5" />
+      </svg>
+      <div class="hero-event hero-floating">
+        <span class="app-icon app-orange"
+          ><svg class="icon" aria-hidden="true"><use href="#i-hub" /></svg
+        ></span>
+        <div>
+          <span class="micro-label">Trigger received</span><strong>A new lead just landed.</strong>
+        </div>
+        <span class="event-dot"></span>
+      </div>
+      <div class="hero-agent">
+        <div class="hero-agent-top">
+          <span class="app-icon app-blue"
+            ><svg class="icon" aria-hidden="true"><use href="#i-apex" /></svg
+          ></span>
+          <div>
+            <strong>A little help from Apex</strong><span>Inbound lead → right person</span>
+          </div>
+          <span class="tiny-status">Active</span>
+        </div>
+        <div class="agent-routing">
+          <span>New lead</span><i></i
+          ><svg class="icon" aria-hidden="true"><use href="#i-bolt" /></svg><i></i
+          ><span>Sales team</span>
+        </div>
+        <div class="agent-task">
+          <span class="task-check"
+            ><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg
+          ></span>
+          Find the right account owner <span>Done</span>
+        </div>
+        <div class="agent-task">
+          <span class="task-check"
+            ><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg
+          ></span>
+          Add context from your CRM <span>Done</span>
+        </div>
+        <div class="agent-task">
+          <span class="task-check"
+            ><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg
+          ></span>
+          Send a heads-up in Slack <span>Done</span>
+        </div>
+        <div class="agent-bottom">
+          <span><span class="status-dot"></span> All the moving parts. Moving together.</span>
+        </div>
+      </div>
+      <div class="hero-delivered hero-floating">
+        <span class="delivery-icon"
+          ><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg
+        ></span>
+        <div>
+          <strong>And just like that, it’s handled.</strong
+          ><span>Your team takes it from here.</span>
+        </div>
+      </div>
+      <span class="art-caption">A clear path from “to do” to done.</span>
+    </div>
+    <div class="cover-footer">
+      <span>Interactive SaaS landing page concept</span
+      ><span>Design &amp; development by <strong>ShevDevWorks</strong></span>
+    </div>
+  </body>
+</html>
